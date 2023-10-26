@@ -1,0 +1,16 @@
+
+
+--6.1 List all the scientists' names, their projects' names, and the hours worked by that scientist on each project, 
+       in alphabetical order of project name, then scientist name.
+
+  ANS:SELECT S.NAME,P.NAME,HOURS 
+      FROM PROJECTS P,SCIENTISTS S,ASSIGNEDTO A 
+      WHERE P.CODE=A.PROJECT AND A.SCIENTIST=S.SSN  
+      ORDER BY P.NAME,S.NAME;
+
+
+--6.2 Select the project names which are not assigned yet.
+
+  ANS: SELECT P.NAME, A.PROJECT 
+       FROM PROJECTS P LEFT JOIN ASSIGNEDTO A ON P.CODE=A.PROJECT 
+       WHERE A.PROJECT IS NULL;

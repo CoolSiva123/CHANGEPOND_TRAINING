@@ -1,0 +1,81 @@
+Solve the queries and put the select statements in a notepad file and upload
+
+1.List full details of all hotels.
+2.List full details of all hotels in New York.
+3.List the names and cities of all guests, ordered according to their cities.
+4.List all details for non-smoking rooms in ascending order of price.
+5.List the number of hotels there are.
+6.List the cities in which guests live. Each city should be listed only once.
+7.List the average price of a room.
+8.List hotel names, their room numbers, and the type of that room.
+9.List the hotel names, booking dates, and room numbers for all hotels in New York.
+10.What is the number of bookings that started in the month of September?
+11.List the names and cities of guests who began a stay in New York in August.
+12.List the hotel names and room numbers of any hotel rooms that have not been booked.
+13.List the hotel name and city of the hotel with the highest priced room.
+14.List hotel names, room numbers, cities, and that have rooms with prices lower than the lowest priced room in a Boston hotel.
+15.List the average price of a room grouped by city.
+
+
+Queries Answers
+
+1--> SELECT * 
+     FROM HOTEL;
+
+2--> SELECT * 
+     FROM HOTEL 
+     WHERE CITY='NEW YORK';
+
+3--> SELECT NAME,CITY 
+     FROM GUEST 
+     ORDER BY CITY;
+
+4--> SELECT * 
+     FROM ROOM 
+     WHERE TYPE='N' 
+     ORDER BY PRICE ASC;
+
+5--> SELECT COUNT(NAME) 
+     FROM HOTEL;
+
+6--> SELECT DISTINCT CITY 
+     FROM GUEST;
+
+7--> SELECT AVG(PRICE) 
+     FROM ROOM;
+
+8--> SELECT NAME,ROOM_NO,TYPE 
+     FROM HOTEL,ROOM 
+     WHERE HOTEL.HOTEL_NO=ROOM.HOTEL_NO;
+
+9--> SELECT NAME,DATE_FROM,DATE_TO ROOM_NO 
+     FROM HOTEL,BOOKING 
+     WHERE HOTEL.HOTEL_NO=BOOKING.HOTEL_NO AND CITY='NEW YORK'; 
+
+10--> SELECT COUNT(*) 
+      FROM BOOKING 
+      WHERE DATE_FROM >'01-SEP-99';
+
+11--> SELECT G.NAME,G.CITY 
+      FROM GUEST G,BOOKING B,HOTEL H
+      WHERE G.GUEST_NO=B.GUEST_NO AND B.HOTEL_NO=H.HOTEL_NO AND H.CITY='NEW YORK' AND MONTH(DATE_FROM)=8;
+
+12--> SELECT NAME FROM HOTEL,ROOM ,BOOKING
+      WHERE HOTEL.HOTEL_NO=ROOM.HOTEL_NO AND BOOKING.ROOM_NO=ROOM.ROOM_NO AND BOOKING.ROOM_NO IS NULL;
+
+13--> SELECT NAME,CITY FROM HOTEL,ROOM
+      WHERE HOTEL.HOTEL_NO=ROOM.HOTEL_NO AND PRICE=(SELECT MAX(PRICE) FROM ROOM);
+
+14--> SELECT NAME,CITY ROOM_NO,PRICE FROM HOTEL,ROOM
+      WHERE HOTEL.HOTEL_NO=ROOM.HOTEL_NO AND PRICE=(SELECT MIN(PRICE) FROM ROOM WHERE HOTEL_NO IN(SELECT HOTEL_NO FROM HOTEL WHERE CITY='BOSTON'));
+
+15--> SELECT AVG(PRICE),CITY 
+      FROM HOTEL,ROOM 
+      WHERE HOTEL.HOTEL_NO=ROOM.HOTEL_NO 
+      GROUP BY CITY;
+
+
+
+
+
+

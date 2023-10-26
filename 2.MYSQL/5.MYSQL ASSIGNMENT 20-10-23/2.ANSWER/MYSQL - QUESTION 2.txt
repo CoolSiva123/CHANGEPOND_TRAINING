@@ -1,0 +1,94 @@
+-- 2.1 Select the last name of all employees.
+   ANS:SELECT LASTNAME FROM EMPLOYEES;
+
+
+-- 2.2 Select the last name of all employees, without duplicates.
+   ANS:SELECT DISTINCT LASTNAME FROM EMPLOYEES;
+
+
+-- 2.3 Select all the data of employees whose last name is "Smith".
+   ANS:SELECT * FROM EMPLOYEES WHERE LASTNAME="SMITH";
+
+
+-- 2.4 Select all the data of employees whose last name is "Smith" or "Doe".
+   ANS:SELECT * FROM EMPLOYEES WHERE LASTNAME IN ("SMITH","DOE");
+
+
+-- 2.5 Select all the data of employees that work in department 14.
+   ANS:SELECT * FROM EMPLOYEES WHERE DEPARTMENT=14;
+
+
+-- 2.6 Select all the data of employees that work in department 37 or department 77.
+   ANS:SELECT * FROM EMPLOYEES WHERE DEPARTMENT IN (37,77);
+
+
+-- 2.7 Select all the data of employees whose last name begins with an "S".
+   ANS:SELECT * FROM EMPLOYEES WHERE LASTNAME LIKE 'S%';
+
+
+-- 2.8 Select the sum of all the departments' budgets.
+   ANS:SELECT SUM(BUDGET) FROM DEPARTMENTS;
+
+
+-- 2.9 Select the number of employees in each department (you only need to show the department code and the number of employees).
+   ANS:SELECT DEPARTMENT,COUNT(*) AS NO_OF_EMPLOYEES FROM EMPLOYEES GROUP BY DEPARTMENT;
+
+
+-- 2.10 Select all the data of employees, including each employee's department's data.
+   ANS:SELECT * FROM EMPLOYEES,DEPARTMENTS WHERE EMPLOYEES.DEPARTMENT=DEPARTMENTS.CODE;
+
+
+-- 2.11 Select the name and last name of each employee, along with the name and budget of the employee's department.
+   ANS:SELECT E.NAME,E.LASTNAME,D.NAME,D.BUDGET FROM EMPLOYEES E,DEPARTMENTS D WHERE E.DEPARTMENT=D.CODE;
+
+
+-- 2.12 Select the name and last name of employees working for departments with a budget greater than $60,000.
+   ANS:SELECT NAME,LASTNAME FROM EMPLOYEES WHERE DEPARTMENT IN (SELECT CODE FROM DEPARTMENTS WHERE BUDGET>60000);
+
+
+-- 2.13 Select the departments with a budget larger than the average budget of all the departments.
+   ANS:SELECT * FROM DEPARTMENTS WHERE BUDGET>(SELECT AVG(BUDGET) FROM DEPARTMENTS);
+
+
+-- 2.14 Select the names of departments with more than two employees.
+   ANS:SELECT NAME FROM DEPARTMENTS WHERE CODE IN (SELECT DEPARTMENT FROM EMPLOYEES GROUP BY DEPARTMENT HAVING COUNT(*)>2);
+
+
+-- 2.15 Very Important - Select the name and last name of employees working for departments with second lowest budget.
+   ANS:SELECT E.NAME,E.LASTNAME FROM EMPLOYEES E,DEPARTMENTS D WHERE E.DEPARTMENT=D.CODE AND BUDGET = (SELECT MIN(BUDGET) FROM DEPARTMENTS WHERE BUDGET >(SELECT MIN(BUDGET) FROM DEPARTMENTS));
+
+
+-- 2.16  Add a new department called "Quality Assurance", with a budget of $40,000 and departmental code 11.
+   ANS: INSERT INTO DEPARTMENTS VALUES(11,'Quality Assurance',40000);
+
+
+-- And Add an employee called "Mary Moore" in that department, with SSN 847-21-9811.
+   ANS:INSERT INTO EMPLOYEES VALUES(847219811,'Mary','Moore',11);
+
+
+-- 2.17 Reduce the budget of all departments by 10%.
+   ANS:UPDATE DEPARTMENTS SET BUDGET=BUDGET-(BUDGET*0.1);
+
+
+-- 2.18 Reassign all employees from the Research department (code 77) to the IT department (code 14).
+   ANS:UPDATE EMPLOYEES SET DEPARTMENT=14 WHERE DEPARTMENT=77;
+
+
+-- 2.19 Delete from the table all employees in the IT department (code 14).
+   ANS:DELETE FROM EMPLOYEES WHERE DEPARTMENT=14;
+
+
+-- 2.20 Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
+   ANS:DELETE FROM EMPLOYEES WHERE DEPARTMENT IN (SELECT CODE FROM DEPARTMENTS WHERE BUDGET>=60000);
+
+
+-- 2.21 Delete from the table all employees.
+   ANS:DELETE FROM EMPLOYEES;
+
+
+
+
+
+
+
+

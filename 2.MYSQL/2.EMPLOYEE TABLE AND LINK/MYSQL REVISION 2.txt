@@ -1,0 +1,78 @@
+1. Find the number of Male (M) and Female (F) employees in the database and order the counts in descending order
+2. Display the month and total hires for the month with the most hires from the table employee
+3. # Retrieve list of all female employees whose first name is either 'Kellie' or 'Aruna'
+4. # Select names of all departments between department numbers d003 and d006
+5. # Select employee numbers of all individuals who have signed more than one contract after 2000-01-01
+6. # Select all female employees in the the year 2000 or after.
+7. Find the average salary by employee title, round to 2 decimal places and order by descending order.
+8. Find all the employees that have worked in at least 2 departments. Show their first name, last_name and the number of departments they work in. 
+Display all results in ascending order.
+9. Display the first name, last name, and salary of the highest payed employee.
+10. Display the first name, last name, and salary of the second highest payed employe
+11. Display each department and the age of the youngest employee at hire date.
+12. Find all the employees that do not contain vowels in their first name and display the department they work in.
+
+
+ANSWER
+
+1.SELECT GENDER,COUNT(GENDER) 
+  FROM EMPLOYEES 
+  GROUP BY GENDER 
+  ORDER BY COUNT(GENDER) DESC;
+
+2.SELECT MONTH(HIRE_DATE),COUNT(MONTH(HIRE_DATE)) 
+  FROM EMPLOYEES 
+  GROUP BY MONTH(HIRE_DATE) 
+  ORDER BY MONTH(HIRE_DATE) DESC;
+
+3.SELECT * 
+  FROM EMPLOYEES 
+  WHERE GENDER='F' AND FIRST_NAME IN ('KELLIE','ARUNA');
+
+4.SELECT DEPT_NAME 
+  FROM DEPARTMENTS 
+  WHERE DEPT_NO > 'D003' AND DEPT_NO < 'D006';
+
+5.
+
+6.SELECT * 
+  FROM EMPLOYEES 
+  WHERE GENDER='F' AND YEAR(HIRE_DATE) >= 2000;
+
+7.SELECT T.TITLE,ROUND(AVG(SALARY),2) 
+  FROM TITLES T,SALARIES S
+  WHERE T.EMP_NO=S.EMP_NO 
+  GROUP BY TITLE 
+  ORDER BY ROUND(AVG(SALARY),2);
+
+8. SELECT FIRST_NAME,LAST_NAME,COUNT(DEPT_NO) 
+   FROM EMPLOYEES,DEPT_EMP
+   WHERE EMPLOYEES.EMP_NO=DEPT_EMP.EMP_NO 
+   GROUP BY DEPT_EMP.EMP_NO
+   HAVING COUNT(*)>=2 
+   ORDER BY FIRST_NAME ;
+
+9.SELECT FIRST_NAME,LAST_NAME,SALARY 
+  FROM EMPLOYEES,SALARIES
+  WHERE EMPLOYEES.EMP_NO=SALARIES.EMP_NO AND SALARY=(SELECT MAX(SALARY) FROM SALARIES);
+
+10.SELECT FIRST_NAME,LAST_NAME,SALARY "2ND MAX SALARY" 
+   FROM EMPLOYEES,SALARIES
+   WHERE EMPLOYEES.EMP_NO=SALARIES.EMP_NO AND SALARY IN (SELECT MAX(SALARY) FROM SALARIES WHERE SALARY<(SELECT MAX(SALARY) FROM SALARIES));
+
+11.SELECT D.DEPT_NAME,MIN(TIMESTAMPDIFF(YEAR,E.BIRTH_DATE,E.HIRE_DATE)) AS AGE_HIRE_DATE 
+   FROM EMPLOYEES E,DEPT_EMP DE,DEPARTMENTS D
+   WHERE E.EMP_NO=DE.EMP_NO AND DE.DEPT_NO=D.DEPT_NO
+   GROUP BY D.DEPT_NAME;
+
+12.SELECT FIRST_NAME,DEPT_NAME 
+   FROM EMPLOYEES,DEPT_EMP,DEPARTMENTS
+   WHERE EMPLOYEES.EMP_NO=DEPT_EMP.EMP_NO AND DEPT_EMP.DEPT_NO=DEPARTMENTS.DEPT_NO AND
+   NOT(FIRST_NAME LIKE '%A%' OR FIRST_NAME LIKE '%E%' OR FIRST_NAME LIKE '%I%' OR FIRST_NAME LIKE '%O%' OR FIRST_NAME LIKE '%U%');
+
+
+
+
+
+
+
